@@ -1,11 +1,11 @@
 using System.Data;
 using System.Data.SqlClient;
 
-public interface IRepository<T> {
+public interface IRepositoryHealth<Health> {
     Health? Create(DateTime date);
 }
 
-public class HealthRepository : IRepository<Health> {
+public class HealthRepository : IRepositoryHealth<Health> {
     private readonly SQLServerAdapter<Health> _sql;
 
     public HealthRepository() {

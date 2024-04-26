@@ -1,3 +1,6 @@
+run: 
+	dotnet run
+
 create-migration:
 	dotnet ef migrations add $(name)
 

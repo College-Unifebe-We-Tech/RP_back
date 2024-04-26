@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  web:
+    image: mcr.microsoft.com/dotnet/aspnet:8.0
+    container_name: rp_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DBString=Server=db;User Id=sa;Password=MyPass@word;
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  db:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: db
+    ports:
+      - "1433:1433"
+    environment:
+      MSSQL_PID: "Developer"
+      MSSQL_USER: "SA"
+      SA_PASSWORD: "MyPass@word"
+      ACCEPT_EULA: "Y"

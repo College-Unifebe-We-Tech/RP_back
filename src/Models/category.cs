@@ -7,5 +7,5 @@ public class Category
 
     [Required]
     [StringLength(100)]
-    public string CategoryName { get; set; }
+    public string? CategoryName { get; set; }
 }

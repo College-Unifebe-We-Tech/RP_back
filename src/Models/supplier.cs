@@ -6,7 +6,7 @@ public class Supplier
     public int SupplierId { get; set; }
 
     [Required]
-    public string SupplierName { get; set; }
+    public string? SupplierName { get; set; }
 
     public string? SupplierCNPJ { get; set; }
 

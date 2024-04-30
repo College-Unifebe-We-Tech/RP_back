@@ -7,34 +7,31 @@ public class EmployeeController
         _service = new EmployeeService(); 
     }
 
-    public async void Get(HttpContext context, int id) 
+    public async void Get(int id) 
     {
         var employee =_service.Get(id);
          
-        await context.Response.WriteAsJsonAsync<Employee>(employee);
+        Results.Json(employee);
+        Results.Ok();
     }
 
-    public async void Create(HttpContext context) 
+    public async void Create(Employee employee) 
     {
-        var employee = await context.Request.ReadFromJsonAsync<Employee>();
-
         int? employeeId = _service.Create(employee.EmployeeName, employee.EmployeeAddress, employee.EmployeeEmail);
 
-        if (employeeId == null)
+        if (employeeId != null) 
         {
-            context.Response.StatusCode = 500;
+            Results.Json(employee);
+            Results.Ok();
+            
+            return;
         }
 
-        context.Response.StatusCode = 201;
-        await context.Response.WriteAsync(employeeId.ToString());
-        
-        return;
+        Results.Problem();
     }
 
-    public async void Update(HttpContext context, int id) 
+    public async void Update(int id, Employee employee) 
     {
-        var employee = await context.Request.ReadFromJsonAsync<Employee>();
-
         _service.Update(id, employee.EmployeeName, employee.EmployeeAddress, employee.EmployeeEmail);
     }
 
@@ -43,3 +40,4 @@ public class EmployeeController
         _service.Delete(id);
     }
 }
+

@@ -7,36 +7,34 @@ public class SupplierController
         _service = new SupplierService(); 
     }
 
-    public async void Get(HttpContext context, int id) 
+    public void Get(int id) 
     {
         var supplier =_service.Get(id);
          
-        await context.Response.WriteAsJsonAsync<Supplier>(supplier);
+        Results.Json(supplier);
+        Results.Ok();
     }
 
-    public async void Create(HttpContext context) 
+    public void Create(Supplier supplier) 
     {
-        var supplier = await context.Request.ReadFromJsonAsync<Supplier>();
-
         int? supplierId = _service.Create(supplier.SupplierName, supplier.SupplierCNPJ, supplier.SupplierAddress, supplier.SupplierEmail);
 
-        if (supplierId == null) 
+        if (supplierId != null) 
         {
-            context.Response.StatusCode = 500;
+            Results.Json(supplierId);
+            Results.Ok();
+            
+            return;
         }
 
-        context.Response.StatusCode = 201;
-        await context.Response.WriteAsync(supplierId.ToString());
-        
-        return;
+        Results.Problem();
     }
 
-    public async void Update(HttpContext context, int id) 
+    public void Update(int id, Supplier supplier) 
     {
-        var supplier = await context.Request.ReadFromJsonAsync<Supplier>();
-
         _service.Update(id, supplier.SupplierName, supplier.SupplierCNPJ, supplier.SupplierAddress, supplier.SupplierEmail);
     }
+    
     public void Delete(int id) 
     {
         _service.Delete(id);

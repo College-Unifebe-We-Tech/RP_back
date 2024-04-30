@@ -7,34 +7,31 @@ public class CategoryController
         _service = new CategoryService(); 
     }
 
-    public async void Get(HttpContext context, int id) 
+    public void Get(int id) 
     {
         var category =_service.Get(id);
          
-        await context.Response.WriteAsJsonAsync<Category>(category);
+        Results.Json(category);
+        Results.Ok();
     }
 
-    public async void Create(HttpContext context) 
+    public void Create(Category category) 
     {
-        var category = await context.Request.ReadFromJsonAsync<Category>();
+        int? employeeId = _service.Create(category.CategoryName);
 
-        int? categoryId = _service.Create(category.CategoryName);
-
-        if (categoryId == null)
+        if (employeeId != null) 
         {
-            context.Response.StatusCode = 500;
+            Results.Json(employeeId);
+            Results.Ok();
+            
+            return;
         }
 
-        context.Response.StatusCode = 201;
-        await context.Response.WriteAsync(categoryId.ToString());
-    
-        return;
+        Results.Problem();
     }
 
-    public async void Update(HttpContext context, int id) 
+    public void Update(int id, Category category) 
     {
-        var category = await context.Request.ReadFromJsonAsync<Category>();
-
         _service.Update(id, category.CategoryName);
     }
 

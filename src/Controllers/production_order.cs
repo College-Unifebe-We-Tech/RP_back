@@ -7,33 +7,42 @@ public class ProductionOrderController
         _service = new ProductionOrderService(); 
     }
 
-    public void Get(int id) 
+    public IResult Get(int id) 
     {
-        var productionOrder =_service.Get(id);
-         
-        Results.Json(productionOrder);
-        Results.Ok();
+        try
+        {
+            ProductionOrder productionOrderId = _service.Get(id);
+            return Results.Json(productionOrderId, statusCode: StatusCodes.Status200OK);
+        }
+        catch (Exception)
+        {
+            return Results.Problem();
+        }
     }
 
-    public void Create(ProductionOrder productionOrder) 
+    public IResult Create(ProductionOrder productionOrder) 
     {
-
-        int? productionOrderId = _service.Create(productionOrder.ProductionOrderDescription, productionOrder.ProductionOrderExpectedStartDate, productionOrder.ProductionOrderExpectedCompletionDate, productionOrder.EmployeeId);
-
-        if (productionOrderId != null) 
+        try
         {
-            Results.Json(productionOrderId);
-            Results.Ok();
-            
-            return;
+            int? productionOrderId = _service.Create(productionOrder.ProductionOrderDescription, productionOrder.ProductionOrderExpectedStartDate, productionOrder.ProductionOrderExpectedCompletionDate, productionOrder.EmployeeId);
+            return Results.Json(productionOrderId, statusCode: StatusCodes.Status200OK);
         }
-
-        Results.Problem();
+        catch (Exception)
+        {
+            return Results.Problem();
+        }
     }
 
     public void Update(int id, ProductionOrder productionOrder) 
     {
-        _service.Update(id, productionOrder.ProductionOrderDescription, productionOrder.ProductionOrderExpectedStartDate, productionOrder.ProductionOrderExpectedCompletionDate, productionOrder.EmployeeId);
+        try 
+        {
+            _service.Update(id, productionOrder.ProductionOrderDescription, productionOrder.ProductionOrderExpectedStartDate, productionOrder.ProductionOrderExpectedCompletionDate, productionOrder.EmployeeId);
+        }
+        catch (Exception)
+        {
+            Results.Problem();
+        }
     }
     
     public void Delete(int id)

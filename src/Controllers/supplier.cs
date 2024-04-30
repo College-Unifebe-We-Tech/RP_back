@@ -7,32 +7,42 @@ public class SupplierController
         _service = new SupplierService(); 
     }
 
-    public void Get(int id) 
+    public IResult Get(int id) 
     {
-        var supplier =_service.Get(id);
-         
-        Results.Json(supplier);
-        Results.Ok();
+        try
+        {
+            Supplier supplierId = _service.Get(id);
+            return Results.Json(supplierId, statusCode: StatusCodes.Status200OK);
+        }
+        catch (Exception)
+        {
+            return Results.Problem();
+        }
     }
 
-    public void Create(Supplier supplier) 
+    public IResult Create(Supplier supplier) 
     {
-        int? supplierId = _service.Create(supplier.SupplierName, supplier.SupplierCNPJ, supplier.SupplierAddress, supplier.SupplierEmail);
-
-        if (supplierId != null) 
+        try
         {
-            Results.Json(supplierId);
-            Results.Ok();
-            
-            return;
+            int? supplierId = _service.Create(supplier.SupplierName, supplier.SupplierCNPJ, supplier.SupplierAddress, supplier.SupplierEmail);
+            return Results.Json(supplierId, statusCode: StatusCodes.Status200OK);
         }
-
-        Results.Problem();
+        catch (Exception)
+        {
+            return Results.Problem();
+        }
     }
 
     public void Update(int id, Supplier supplier) 
     {
-        _service.Update(id, supplier.SupplierName, supplier.SupplierCNPJ, supplier.SupplierAddress, supplier.SupplierEmail);
+        try 
+        {
+            _service.Update(id, supplier.SupplierName, supplier.SupplierCNPJ, supplier.SupplierAddress, supplier.SupplierEmail);
+        }
+        catch (Exception)
+        {
+            Results.Problem();
+        }
     }
     
     public void Delete(int id) 

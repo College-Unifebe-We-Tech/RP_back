@@ -21,7 +21,7 @@ public class SupplierRepository : IRepositorySupplier<Supplier>
 
     public Supplier? Get(int id)
     {
-        return _sql.Get<Supplier>("SELECT SupplierName, SupplierCNPJ, SupplierAddress, SupplierEmail FROM Supplier WHERE SupplierId = @id", [
+        return _sql.Get<Supplier>("SELECT SupplierId, SupplierName, SupplierCNPJ, SupplierAddress, SupplierEmail FROM Supplier WHERE SupplierId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
         ]);
     }
@@ -38,7 +38,7 @@ public class SupplierRepository : IRepositorySupplier<Supplier>
 
     public Supplier? GetByName(string name) 
     {
-        return _sql.Get<Supplier>("SELECT SupplierName, SupplierCNPJ, SupplierAddress, SupplierEmail FROM Supplier WHERE SupplierName = @name", [
+        return _sql.Get<Supplier>("SELECT SupplierId, SupplierName, SupplierCNPJ, SupplierAddress, SupplierEmail FROM Supplier WHERE SupplierName = @name", [
             new SqlParameter("@name", SqlDbType.VarChar) { Value = name },
         ]);
     }

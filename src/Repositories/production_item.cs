@@ -20,15 +20,15 @@ public class ProductionItemRepository : IRepositoryProductionItem<ProductionItem
 
     public ProductionItem? Get(int id)
     {
-        return _sql.Get<ProductionItem>("SELECT ProductionOrderId, ProductId, Quantity, Waste FROM ProductionItem WHERE ProductionItemId = @id", [
+        return _sql.Get<ProductionItem>("SELECT ProductionItemId, ProductionOrderId, ProductId, Quantity, Waste FROM ProductionItem WHERE ProductionItemId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
         ]);
     }
 
-    public ProductionItem? Create(int productionOrder, int productId, int quantity, bool waste) 
+    public ProductionItem? Create(int productionOrderId, int productId, int quantity, bool waste) 
     {
-        return _sql.Get<ProductionItem>("INSERT INTO ProductionItem (ProductionOrderId, ProductId, Quantity, Waste) OUTPUT inserted.ProductionItemId VALUES (@productionOrder, @productId, @quantity, @waste)", [
-            new SqlParameter("@productionOrder", SqlDbType.Int) { Value = productionOrder },
+        return _sql.Get<ProductionItem>("INSERT INTO ProductionItem (ProductionOrderId, ProductId, Quantity, Waste) OUTPUT inserted.ProductionItemId VALUES (@productionOrderId, @productId, @quantity, @waste)", [
+            new SqlParameter("@productionOrderId", SqlDbType.Int) { Value = productionOrderId },
             new SqlParameter("@productId", SqlDbType.Int) { Value = productId },
             new SqlParameter("@quantity", SqlDbType.Int) { Value = quantity },
             new SqlParameter("@name", SqlDbType.Bit) { Value = waste },

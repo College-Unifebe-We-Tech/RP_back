@@ -7,37 +7,55 @@ public class EmployeeController
         _service = new EmployeeService(); 
     }
 
-    public async void Get(int id) 
+    public IResult Get(int id) 
     {
-        var employee =_service.Get(id);
-         
-        Results.Json(employee);
-        Results.Ok();
-    }
-
-    public async void Create(Employee employee) 
-    {
-        int? employeeId = _service.Create(employee.EmployeeName, employee.EmployeeAddress, employee.EmployeeEmail);
-
-        if (employeeId != null) 
+        try
         {
-            Results.Json(employee);
-            Results.Ok();
-            
-            return;
+            Employee employeeId = _service.Get(id);
+            return Results.Json(employeeId, statusCode: StatusCodes.Status200OK);
         }
-
-        Results.Problem();
+        catch (Exception)
+        {
+            return Results.Problem();
+        }
     }
 
-    public async void Update(int id, Employee employee) 
+    public IResult Create(Employee employee) 
     {
-        _service.Update(id, employee.EmployeeName, employee.EmployeeAddress, employee.EmployeeEmail);
+        try
+        {
+            int? employeeId = _service.Create(employee.EmployeeName, employee.EmployeeAddress, employee.EmployeeEmail);
+            return Results.Json(employeeId, statusCode: StatusCodes.Status200OK);
+        }
+        catch (Exception)
+        {
+            return Results.Problem();
+        }
+    }
+
+
+    public void Update(int id, Employee employee) 
+    {
+        try
+        {
+            _service.Update(id, employee.EmployeeName, employee.EmployeeAddress, employee.EmployeeEmail);
+        }
+        catch(Exception)
+        {
+            Results.Problem();
+        }
     }
 
     public void Delete(int id) 
     {
-        _service.Delete(id);
+        try
+        {
+            _service.Delete(id);
+        }
+        catch(Exception)
+        {
+            Results.Problem();
+        }
     }
 }
 

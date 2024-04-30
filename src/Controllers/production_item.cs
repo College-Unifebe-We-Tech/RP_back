@@ -7,36 +7,54 @@ public class ProductionItemController
         _service = new ProductionItemService(); 
     }
 
-    public void Get(int id) 
+    public IResult Get(int id) 
     {
-        var productionItem =_service.Get(id);
-         
-        Results.Json(productionItem);
-        Results.Ok();
+        try
+        {
+            ProductionItem productionItemId = _service.Get(id);
+            return Results.Json(productionItemId, statusCode: StatusCodes.Status200OK);
+        }
+        catch (Exception)
+        {
+            return Results.Problem();
+        }
     }
 
-    public void Create(ProductionItem productionItem) 
+    public IResult Create(ProductionItem productionItem) 
     {
-        int? productionItemId = _service.Create(productionItem.ProductionOrderId, productionItem.ProductId, productionItem.Quantity, productionItem.Waste);
-
-        if (productionItemId != null) 
+        try
         {
-            Results.Json(productionItemId);
-            Results.Ok();
-            
-            return;
+            int? productionItemId = _service.Create(productionItem.ProductionOrderId, productionItem.ProductId, productionItem.Quantity, productionItem.Waste);
+            return Results.Json(productionItem, statusCode: StatusCodes.Status200OK);
         }
-
-        Results.Problem();
+        catch (Exception)
+        {
+            return Results.Problem();
+        }
     }
 
     public void Update(int id, ProductionItem productionItem) 
     {
-        _service.Update(id, productionItem.ProductionOrderId, productionItem.ProductId, productionItem.Quantity, productionItem.Waste);
+        try 
+        {
+            _service.Update(id, productionItem.ProductionOrderId, productionItem.ProductId, productionItem.Quantity, productionItem.Waste);
+        }
+        catch (Exception)
+        {
+            Results.Problem();
+        }
     }
 
     public void Delete(int id) 
     {
-        _service.Delete(id);
+        try
+        {
+            _service.Delete(id);
+        }
+        catch (Exception)
+        {
+            Results.Problem();
+        }
+        
     }
 }

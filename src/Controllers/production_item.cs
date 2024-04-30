@@ -7,38 +7,35 @@ public class ProductionItemController
         _service = new ProductionItemService(); 
     }
 
-    public async void Get(HttpContext context, int id)
+    public void Get(int id) 
     {
         var productionItem =_service.Get(id);
          
-        await context.Response.WriteAsJsonAsync<ProductionItem>(productionItem);
+        Results.Json(productionItem);
+        Results.Ok();
     }
 
-    public async void Create(HttpContext context) 
+    public void Create(ProductionItem productionItem) 
     {
-        var productionItem = await context.Request.ReadFromJsonAsync<ProductionItem>();
-
         int? productionItemId = _service.Create(productionItem.ProductionOrderId, productionItem.ProductId, productionItem.Quantity, productionItem.Waste);
 
-        if (productionItemId == null) 
+        if (productionItemId != null) 
         {
-            context.Response.StatusCode = 500;
+            Results.Json(productionItemId);
+            Results.Ok();
+            
+            return;
         }
 
-        context.Response.StatusCode = 201;
-        await context.Response.WriteAsync(productionItemId.ToString());
-    
-        return;
+        Results.Problem();
     }
 
-    public async void Update(HttpContext context, int id) 
+    public void Update(int id, ProductionItem productionItem) 
     {
-        var productionItem = await context.Request.ReadFromJsonAsync<ProductionItem>();
-
         _service.Update(id, productionItem.ProductionOrderId, productionItem.ProductId, productionItem.Quantity, productionItem.Waste);
     }
 
-    public void Delete(HttpContext context, int id) 
+    public void Delete(int id) 
     {
         _service.Delete(id);
     }

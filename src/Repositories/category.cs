@@ -21,7 +21,7 @@ public class CategoryRepository : IRepositoryCategory<Category>
 
     public Category? Get(int id)
     {
-        return _sql.Get<Category>("SELECT CategoryName FROM Category WHERE CategoryId = @id", [
+        return _sql.Get<Category>("SELECT CategoryId, CategoryName FROM Category WHERE CategoryId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
         ]);
     }
@@ -35,7 +35,7 @@ public class CategoryRepository : IRepositoryCategory<Category>
 
     public Category? GetByName(string name) 
     {
-        return _sql.Get<Category>("SELECT CategoryName FROM Category WHERE CategoryName = @name", [
+        return _sql.Get<Category>("SELECT CategoryId, CategoryName FROM Category WHERE CategoryName = @name", [
             new SqlParameter("@name", SqlDbType.VarChar) { Value = name },
         ]);
     }

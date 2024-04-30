@@ -21,7 +21,7 @@ public class EmployeeRepository : IRepositoryEmployee<Employee>
 
     public Employee? Get(int id)
     {
-        return _sql.Get<Employee>("SELECT EmployeeName, EmployeeAddress, EmployeeEmail FROM Employee WHERE EmployeeId = @id", [
+        return _sql.Get<Employee>("SELECT EmployeeId, EmployeeName, EmployeeAddress, EmployeeEmail FROM Employee WHERE EmployeeId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
         ]);
     }
@@ -35,10 +35,9 @@ public class EmployeeRepository : IRepositoryEmployee<Employee>
         ]);
     }
 
-
     public Employee? GetByName(string name) 
     {
-        return _sql.Get<Employee>("SELECT EmployeeName FROM Employee WHERE EmployeeName = @name", [
+        return _sql.Get<Employee>("SELECT EmployeeId EmployeeName FROM Employee WHERE EmployeeName = @name", [
             new SqlParameter("@name", SqlDbType.VarChar) { Value = name },
         ]);
     }

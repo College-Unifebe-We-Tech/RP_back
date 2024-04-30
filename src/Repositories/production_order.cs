@@ -20,7 +20,7 @@ public class ProductionOrderRepository : IRepositoryProductionOrder<ProductionOr
 
     public ProductionOrder? Get(int id)
     {
-        return _sql.Get<ProductionOrder>("SELECT ProductionOrderDescription, ProductionOrderExpectedStartDate, ProductionOrderExpectedCompletionDate, EmployeeId FROM ProductionOrder WHERE ProductionOrderId = @id", [
+        return _sql.Get<ProductionOrder>("SELECT ProductionOrderId, ProductionOrderDescription, ProductionOrderExpectedStartDate, ProductionOrderExpectedCompletionDate, EmployeeId FROM ProductionOrder WHERE ProductionOrderId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
         ]);
     }

@@ -7,36 +7,53 @@ public class ProductController
         _service = new ProductService(); 
     }
 
-    public void Get(int id) 
+    public IResult Get(int id) 
     {
-        var product =_service.Get(id);
-         
-        Results.Json(product);
-        Results.Ok();
+        try
+        {
+            Product productId = _service.Get(id);
+            return Results.Json(productId, statusCode: StatusCodes.Status200OK);
+        }
+        catch (Exception)
+        {
+            return Results.Problem();
+        }
     }
 
-    public void Create(Product product) 
+    public IResult Create(Product product) 
     {
-        int? productId = _service.Create(product.ProductName, product.SupplierId, product.CategoryId, product.ProductCostPrice, product.ProductSalePrice);
-
-        if (productId != null) 
+        try
         {
-            Results.Json(productId);
-            Results.Ok();
-            
-            return;
+            int? productId = _service.Create(product.ProductName, product.SupplierId, product.CategoryId, product.ProductCostPrice, product.ProductSalePrice);
+            return Results.Json(productId, statusCode: StatusCodes.Status200OK);
         }
-
-        Results.Problem();
+        catch (Exception)
+        {
+            return Results.Problem();
+        }
     }
 
     public void Update(int id, Product product) 
     {
-        _service.Update(id, product.ProductName, product.SupplierId, product.CategoryId, product.ProductCostPrice, product.ProductSalePrice);
+        try
+        {
+            _service.Update(id, product.ProductName, product.SupplierId, product.CategoryId, product.ProductCostPrice, product.ProductSalePrice);
+        }
+        catch(Exception)
+        {
+            Results.Problem();
+        }
     }
 
     public void Delete(int id) 
     {
-        _service.Delete(id);
+        try
+        {
+            _service.Delete(id);
+        }
+        catch(Exception)
+        {
+            Results.Problem();
+        }
     }
 }

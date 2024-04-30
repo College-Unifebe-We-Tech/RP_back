@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 public class CategoryController 
 {
     private readonly CategoryService _service;
@@ -7,36 +9,54 @@ public class CategoryController
         _service = new CategoryService(); 
     }
 
-    public void Get(int id) 
+    public IResult Get(int id) 
     {
-        var category =_service.Get(id);
-         
-        Results.Json(category);
-        Results.Ok();
+        try
+        {
+            Category categoryId = _service.Get(id);
+            return Results.Json(categoryId, statusCode: StatusCodes.Status200OK);
+        }
+        catch (Exception)
+        {
+            return Results.Problem();
+        }
     }
 
-    public void Create(Category category) 
+    public IResult Create(Category category) 
     {
-        int? employeeId = _service.Create(category.CategoryName);
-
-        if (employeeId != null) 
+        try
         {
-            Results.Json(employeeId);
-            Results.Ok();
-            
-            return;
+            int? categoryId = _service.Create(category.CategoryName);
+            return Results.Json(categoryId, statusCode: StatusCodes.Status200OK);
         }
-
-        Results.Problem();
+        catch (Exception)
+        {
+            return Results.Problem();
+        }
     }
 
     public void Update(int id, Category category) 
     {
-        _service.Update(id, category.CategoryName);
+        try 
+        {
+            _service.Update(id, category.CategoryName);
+        }
+        catch (Exception)
+        {
+            Results.Problem();
+        }
     }
 
     public void Delete(int id) 
     {
-        _service.Delete(id);
+        try
+        {
+            _service.Delete(id);
+        }
+        catch (Exception)
+        {
+            Results.Problem();
+        }
+        
     }
 }

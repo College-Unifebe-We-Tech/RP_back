@@ -13,7 +13,7 @@ public class EmployeeService
         return _repository.Get(id);
     }
 
-    public int? Create(int id, string name, string address, string email) 
+    public int? Create(string name, string address, string email) 
     {
         var existingEmployee = _repository.GetByName(name);
         if (existingEmployee?.EmployeeName == name)
@@ -34,10 +34,5 @@ public class EmployeeService
     public void Delete (int id)
     {
         _repository.Delete(id);
-    }
-
-    internal int? Create(string? employeeName, string? employeeAddress, string? employeeEmail)
-    {
-        throw new NotImplementedException();
     }
 }

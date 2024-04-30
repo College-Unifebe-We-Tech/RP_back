@@ -11,12 +11,13 @@ public class SupplierController
     {
         try
         {
-            Supplier supplierId = _service.Get(id);
+            Supplier? supplierId = _service.Get(id) ?? throw new Exception("does not exist");
+
             return Results.Json(supplierId, statusCode: StatusCodes.Status200OK);
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            return Results.Problem();
+            return Results.Problem(exception.Message);;
         }
     }
 
@@ -24,29 +25,41 @@ public class SupplierController
     {
         try
         {
-            int? supplierId = _service.Create(supplier.SupplierName, supplier.SupplierCNPJ, supplier.SupplierAddress, supplier.SupplierEmail);
+            int? supplierId = _service.Create(supplier.SupplierName, supplier.SupplierCNPJ, supplier.SupplierAddress, supplier.SupplierEmail) ?? throw new Exception("did not create");
+            
             return Results.Json(supplierId, statusCode: StatusCodes.Status200OK);
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            return Results.Problem();
+            return Results.Problem(exception.Message);;
         }
     }
 
-    public void Update(int id, Supplier supplier) 
+    public IResult Update(int id, Supplier supplier) 
     {
         try 
         {
             _service.Update(id, supplier.SupplierName, supplier.SupplierCNPJ, supplier.SupplierAddress, supplier.SupplierEmail);
+
+            return Results.Ok();
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            Results.Problem();
+            return Results.Problem(exception.Message);;
         }
     }
     
-    public void Delete(int id) 
+    public IResult Delete(int id) 
     {
-        _service.Delete(id);
+        try 
+        {
+            _service.Delete(id);
+
+            return Results.Ok();
+        }
+        catch (Exception exception)
+        {
+            return Results.Problem(exception.Message);;
+        }    
     }
 }

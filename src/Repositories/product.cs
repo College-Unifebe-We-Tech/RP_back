@@ -1,7 +1,8 @@
 using System.Data;
 using System.Data.SqlClient;
 
-public interface IRepositoryProduct<Product> {
+public interface IRepositoryProduct<Product> 
+{
     Product? Get(int id);
     Product? Create(string name, int supplier, int category, decimal costPrice, decimal salePrice);
     Product? GetByName(string name);
@@ -9,10 +10,12 @@ public interface IRepositoryProduct<Product> {
     void Delete(int id);
 }
 
-public class ProductRepository : IRepositoryProduct<Product> {
+public class ProductRepository : IRepositoryProduct<Product> 
+{
     private readonly SQLServerAdapter<Product> _sql;
 
-    public ProductRepository() {
+    public ProductRepository() 
+    {
         _sql = new SQLServerAdapter<Product>(EnvironmentVariables.DBString);
     }
 
@@ -53,7 +56,8 @@ public class ProductRepository : IRepositoryProduct<Product> {
         ]);
     }
 
-    public void Delete(int id) {
+    public void Delete(int id) 
+    {
         _sql.Execute("DELETE FROM Product WHERE ProductId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
         ]);

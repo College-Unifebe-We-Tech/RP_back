@@ -7,34 +7,31 @@ public class ProductController
         _service = new ProductService(); 
     }
 
-    public async void Get(HttpContext context, int id) 
+    public void Get(int id) 
     {
         var product =_service.Get(id);
          
-        await context.Response.WriteAsJsonAsync<Product>(product);
+        Results.Json(product);
+        Results.Ok();
     }
 
-    public async void Create(HttpContext context) 
+    public void Create(Product product) 
     {
-        var product = await context.Request.ReadFromJsonAsync<Product>();
-
         int? productId = _service.Create(product.ProductName, product.SupplierId, product.CategoryId, product.ProductCostPrice, product.ProductSalePrice);
 
-        if (productId == null)
+        if (productId != null) 
         {
-            context.Response.StatusCode = 500;
+            Results.Json(productId);
+            Results.Ok();
+            
+            return;
         }
 
-        context.Response.StatusCode = 201;
-        await context.Response.WriteAsync(productId.ToString());
-    
-        return;
+        Results.Problem();
     }
 
-    public async void Update(HttpContext context, int id) 
+    public void Update(int id, Product product) 
     {
-        var product = await context.Request.ReadFromJsonAsync<Product>();
-
         _service.Update(id, product.ProductName, product.SupplierId, product.CategoryId, product.ProductCostPrice, product.ProductSalePrice);
     }
 

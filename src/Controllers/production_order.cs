@@ -7,35 +7,35 @@ public class ProductionOrderController
         _service = new ProductionOrderService(); 
     }
 
-    public async void Get(HttpContext context, int id) 
+    public void Get(int id) 
     {
-        var ProductionOrder =_service.Get(id);
+        var productionOrder =_service.Get(id);
          
-        await context.Response.WriteAsJsonAsync<ProductionOrder>(ProductionOrder);
+        Results.Json(productionOrder);
+        Results.Ok();
     }
 
-    public async void Create(HttpContext context) 
+    public void Create(ProductionOrder productionOrder) 
     {
-        var productionOrder = await context.Request.ReadFromJsonAsync<ProductionOrder>();
 
         int? productionOrderId = _service.Create(productionOrder.ProductionOrderDescription, productionOrder.ProductionOrderExpectedStartDate, productionOrder.ProductionOrderExpectedCompletionDate, productionOrder.EmployeeId);
 
-        if (productionOrderId == null) {
-            context.Response.StatusCode = 500;   
+        if (productionOrderId != null) 
+        {
+            Results.Json(productionOrderId);
+            Results.Ok();
+            
+            return;
         }
 
-        context.Response.StatusCode = 201;
-        await context.Response.WriteAsync(productionOrderId.ToString());
-    
-        return;
+        Results.Problem();
     }
 
-    public async void Update(HttpContext context, int id) 
+    public void Update(int id, ProductionOrder productionOrder) 
     {
-        var productionOrder = await context.Request.ReadFromJsonAsync<ProductionOrder>();
-
         _service.Update(id, productionOrder.ProductionOrderDescription, productionOrder.ProductionOrderExpectedStartDate, productionOrder.ProductionOrderExpectedCompletionDate, productionOrder.EmployeeId);
     }
+    
     public void Delete(int id)
     {
         _service.Delete(id);

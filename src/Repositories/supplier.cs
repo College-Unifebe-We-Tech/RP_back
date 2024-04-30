@@ -1,7 +1,8 @@
 using System.Data;
 using System.Data.SqlClient;
 
-public interface IRepositorySupplier<Supplier> {
+public interface IRepositorySupplier<Supplier> 
+{
     Supplier? Get(int id);
     Supplier? Create(string name, string cnpj, string address, string email);
     Supplier? GetByName(string name);
@@ -9,23 +10,25 @@ public interface IRepositorySupplier<Supplier> {
     void Delete(int id);
 }
 
-public class SupplierRepository : IRepositorySupplier<Supplier> {
+public class SupplierRepository : IRepositorySupplier<Supplier> 
+{
     private readonly SQLServerAdapter<Supplier> _sql;
 
-    public SupplierRepository() {
+    public SupplierRepository() 
+    {
         _sql = new SQLServerAdapter<Supplier>(EnvironmentVariables.DBString);
     }
 
     public Supplier? Get(int id)
     {
-        return _sql.Get<Supplier>("SELECT SupplierId, SupplierName, SupplierCNPJ, SupplierAddress, SupplierEmail FROM Supplier WHERE SupplierId = @id", [
+        return _sql.Get<Supplier>("SELECT SupplierName, SupplierCNPJ, SupplierAddress, SupplierEmail FROM Supplier WHERE SupplierId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
         ]);
     }
 
     public Supplier? Create(string name, string cnpj, string address, string email) 
     {
-        return _sql.Get<Supplier>("INSERT INTO Supplier (SupplierId, SupplierName, SupplierCNPJ, SupplierAddress, SupplierEmail) OUTPUT inserted.* VALUES (@name, @supplierId, @categoryId, @costPrice, @salePrice)", [
+        return _sql.Get<Supplier>("INSERT INTO Supplier (SupplierName, SupplierCNPJ, SupplierAddress, SupplierEmail) OUTPUT inserted.* VALUES (@name, @supplierId, @categoryId, @costPrice, @salePrice)", [
             new SqlParameter("@name", SqlDbType.VarChar) { Value = name },
             new SqlParameter("@cnpj", SqlDbType.VarChar) { Value = cnpj},
             new SqlParameter("@address", SqlDbType.VarChar) { Value = address},
@@ -35,7 +38,7 @@ public class SupplierRepository : IRepositorySupplier<Supplier> {
 
     public Supplier? GetByName(string name) 
     {
-        return _sql.Get<Supplier>("SELECT SupplierId, SupplierName, SupplierCNPJ, SupplierAddress, SupplierEmail FROM Supplier WHERE SupplierName = @name", [
+        return _sql.Get<Supplier>("SELECT SupplierName, SupplierCNPJ, SupplierAddress, SupplierEmail FROM Supplier WHERE SupplierName = @name", [
             new SqlParameter("@name", SqlDbType.VarChar) { Value = name },
         ]);
     }
@@ -51,7 +54,8 @@ public class SupplierRepository : IRepositorySupplier<Supplier> {
         ]);
     }
 
-    public void Delete(int id) {
+    public void Delete(int id) 
+    {
         _sql.Execute("DELETE FROM Supplier WHERE SupplierId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
         ]);

@@ -1,7 +1,8 @@
 using System.Data;
 using System.Data.SqlClient;
 
-public interface IRepositoryCategory<Category> {
+public interface IRepositoryCategory<Category> 
+{
     Category? Get(int id);
     Category? Create(string name);
     Category? GetByName(string name);
@@ -9,10 +10,12 @@ public interface IRepositoryCategory<Category> {
     void Delete(int id);
 }
 
-public class CategoryRepository : IRepositoryCategory<Category> {
+public class CategoryRepository : IRepositoryCategory<Category> 
+{
     private readonly SQLServerAdapter<Category> _sql;
 
-    public CategoryRepository() {
+    public CategoryRepository() 
+    {
         _sql = new SQLServerAdapter<Category>(EnvironmentVariables.DBString);
     }
 
@@ -37,14 +40,16 @@ public class CategoryRepository : IRepositoryCategory<Category> {
         ]);
     }
 
-    public void Update(int id, string name) {
+    public void Update(int id, string name) 
+    {
         _sql.Execute("UPDATE Category SET CategoryName = @name WHERE CategoryId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
             new SqlParameter("@name", SqlDbType.VarChar) { Value = name }
         ]);
     }
 
-    public void Delete(int id) {
+    public void Delete(int id) 
+    {
         _sql.Execute("DELETE FROM Category WHERE CategoryId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
         ]);

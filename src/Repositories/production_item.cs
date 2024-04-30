@@ -1,17 +1,20 @@
 using System.Data;
 using System.Data.SqlClient;
 
-public interface IRepositoryProductionItem<ProductionItem> {
+public interface IRepositoryProductionItem<ProductionItem> 
+{
     ProductionItem? Get(int id);
     ProductionItem? Create(int productionOrder, int productId, int quantity, bool waste);
     void Update(int id, int productionOrder, int productId, int quantity, bool waste);
     void Delete(int id);
 }
 
-public class ProductionItemRepository : IRepositoryProductionItem<ProductionItem> {
+public class ProductionItemRepository : IRepositoryProductionItem<ProductionItem> 
+{
     private readonly SQLServerAdapter<ProductionItem> _sql;
 
-    public ProductionItemRepository() {
+    public ProductionItemRepository() 
+    {
         _sql = new SQLServerAdapter<ProductionItem>(EnvironmentVariables.DBString);
     }
 
@@ -32,7 +35,8 @@ public class ProductionItemRepository : IRepositoryProductionItem<ProductionItem
         ]);
     }
 
-    public void Update(int id, int productionOrder, int productId, int quantity, bool waste) {
+    public void Update(int id, int productionOrder, int productId, int quantity, bool waste) 
+    {
         _sql.Execute("UPDATE ProductionItem SET ProductId, Quantity, Waste = @name WHERE ProductionItemId = @id", [
             new SqlParameter("@productionOrder", SqlDbType.Int) { Value = productionOrder },
             new SqlParameter("@productId", SqlDbType.Int) { Value = productId },
@@ -41,7 +45,8 @@ public class ProductionItemRepository : IRepositoryProductionItem<ProductionItem
         ]);
     }
 
-    public void Delete(int id) {
+    public void Delete(int id) 
+    {
         _sql.Execute("DELETE FROM ProductionItem WHERE ProductionItemId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
         ]);

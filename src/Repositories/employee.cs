@@ -1,7 +1,8 @@
 using System.Data;
 using System.Data.SqlClient;
 
-public interface IRepositoryEmployee<Employee> {
+public interface IRepositoryEmployee<Employee> 
+{
     Employee? Get(int id);
     Employee? Create(string name, string address, string email);
     Employee? GetByName(string name);
@@ -9,16 +10,18 @@ public interface IRepositoryEmployee<Employee> {
     void Delete(int id);
 }
 
-public class EmployeeRepository : IRepositoryEmployee<Employee> {
+public class EmployeeRepository : IRepositoryEmployee<Employee> 
+{
     private readonly SQLServerAdapter<Employee> _sql;
 
-    public EmployeeRepository() {
+    public EmployeeRepository() 
+    {
         _sql = new SQLServerAdapter<Employee>(EnvironmentVariables.DBString);
     }
 
     public Employee? Get(int id)
     {
-        return _sql.Get<Employee>("SELECT EmployeeName FROM Employee WHERE EmployeeId = @id", [
+        return _sql.Get<Employee>("SELECT EmployeeName, EmployeeAddress, EmployeeEmail FROM Employee WHERE EmployeeId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
         ]);
     }
@@ -51,7 +54,8 @@ public class EmployeeRepository : IRepositoryEmployee<Employee> {
     }
 
 
-    public void Delete(int id) {
+    public void Delete(int id) 
+    {
         _sql.Execute("DELETE FROM Employee WHERE EmployeeId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
         ]);

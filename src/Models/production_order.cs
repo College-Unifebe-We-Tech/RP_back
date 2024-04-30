@@ -1,10 +1,11 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 public class ProductionOrder
 {
     [Key]
+    [JsonIgnore]
     public int ProductionOrderId { get; set; }
     
     [Required]
@@ -27,5 +28,6 @@ public class ProductionOrder
     public int EmployeeId { get; set; }
     
     [ForeignKey("EmployeeId")]
+    [JsonIgnore]
     public Employee? Employee { get; set; }
 }

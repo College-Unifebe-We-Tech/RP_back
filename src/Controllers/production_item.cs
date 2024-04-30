@@ -11,12 +11,13 @@ public class ProductionItemController
     {
         try
         {
-            ProductionItem productionItemId = _service.Get(id);
+            ProductionItem? productionItemId = _service.Get(id) ?? throw new Exception("does not exist");
+
             return Results.Json(productionItemId, statusCode: StatusCodes.Status200OK);
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            return Results.Problem();
+            return Results.Problem(exception.Message);;
         }
     }
 
@@ -24,37 +25,41 @@ public class ProductionItemController
     {
         try
         {
-            int? productionItemId = _service.Create(productionItem.ProductionOrderId, productionItem.ProductId, productionItem.Quantity, productionItem.Waste);
+            int? productionItemId = _service.Create(productionItem.ProductionOrderId, productionItem.ProductId, productionItem.Quantity, productionItem.Waste) ?? throw new Exception("did not create");
+            
             return Results.Json(productionItem, statusCode: StatusCodes.Status200OK);
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            return Results.Problem();
+            return Results.Problem(exception.Message);;
         }
     }
 
-    public void Update(int id, ProductionItem productionItem) 
+    public IResult Update(int id, ProductionItem productionItem) 
     {
         try 
         {
             _service.Update(id, productionItem.ProductionOrderId, productionItem.ProductId, productionItem.Quantity, productionItem.Waste);
+        
+            return Results.Ok();
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            Results.Problem();
+            return Results.Problem(exception.Message);;
         }
     }
 
-    public void Delete(int id) 
+    public IResult Delete(int id) 
     {
         try
         {
             _service.Delete(id);
+
+            return Results.Ok();
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            Results.Problem();
+            return Results.Problem(exception.Message);;
         }
-        
     }
 }

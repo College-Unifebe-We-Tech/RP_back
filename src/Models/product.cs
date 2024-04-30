@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 public class Product
 {
     [Key]
+    [JsonIgnore]
     public int ProductId { get; set; }
     
     [Required]
@@ -14,12 +16,14 @@ public class Product
     public int SupplierId { get; set; }
     
     [Required]
+    [JsonIgnore]
     public Supplier? Supplier { get; set; }
 
     [Required]
     [ForeignKey("Category")]
     public int CategoryId { get; set; }
-    
+
+    [JsonIgnore]
     public Category? Category { get; set; }
     
     [Required]

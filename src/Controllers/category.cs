@@ -13,12 +13,12 @@ public class CategoryController
     {
         try
         {
-            Category categoryId = _service.Get(id);
+            Category? categoryId = _service.Get(id) ?? throw new Exception("does not exist");
             return Results.Json(categoryId, statusCode: StatusCodes.Status200OK);
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            return Results.Problem();
+            return Results.Problem(exception.Message);
         }
     }
 
@@ -26,36 +26,41 @@ public class CategoryController
     {
         try
         {
-            int? categoryId = _service.Create(category.CategoryName);
+            int? categoryId = _service.Create(category.CategoryName) ?? throw new Exception("did not create");
+            
             return Results.Json(categoryId, statusCode: StatusCodes.Status200OK);
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            return Results.Problem();
+            return Results.Problem(exception.Message);
         }
     }
 
-    public void Update(int id, Category category) 
+    public IResult Update(int id, Category category) 
     {
         try 
         {
             _service.Update(id, category.CategoryName);
+
+            return Results.Ok();
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            Results.Problem();
+            return Results.Problem(exception.Message);
         }
     }
 
-    public void Delete(int id) 
+    public IResult Delete(int id) 
     {
         try
         {
             _service.Delete(id);
+
+            return Results.Ok();
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            Results.Problem();
+            return Results.Problem(exception.Message);
         }
         
     }

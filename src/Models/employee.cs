@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 public class Employee
 {
     [Key]
+    [JsonIgnore]
     public int EmployeeId { get; set; }
 
     [Required]

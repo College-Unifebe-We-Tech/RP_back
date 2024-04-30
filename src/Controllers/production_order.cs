@@ -11,12 +11,13 @@ public class ProductionOrderController
     {
         try
         {
-            ProductionOrder productionOrderId = _service.Get(id);
+            ProductionOrder? productionOrderId = _service.Get(id)  ?? throw new Exception("does not exist");
+
             return Results.Json(productionOrderId, statusCode: StatusCodes.Status200OK);
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            return Results.Problem();
+            return Results.Problem(exception.Message);;
         }
     }
 
@@ -24,29 +25,41 @@ public class ProductionOrderController
     {
         try
         {
-            int? productionOrderId = _service.Create(productionOrder.ProductionOrderDescription, productionOrder.ProductionOrderExpectedStartDate, productionOrder.ProductionOrderExpectedCompletionDate, productionOrder.EmployeeId);
+            int? productionOrderId = _service.Create(productionOrder.ProductionOrderDescription, productionOrder.ProductionOrderExpectedStartDate, productionOrder.ProductionOrderExpectedCompletionDate, productionOrder.EmployeeId) ?? throw new Exception("did not create");
+            
             return Results.Json(productionOrderId, statusCode: StatusCodes.Status200OK);
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            return Results.Problem();
+            return Results.Problem(exception.Message);;
         }
     }
 
-    public void Update(int id, ProductionOrder productionOrder) 
+    public IResult Update(int id, ProductionOrder productionOrder) 
     {
         try 
         {
             _service.Update(id, productionOrder.ProductionOrderDescription, productionOrder.ProductionOrderExpectedStartDate, productionOrder.ProductionOrderExpectedCompletionDate, productionOrder.EmployeeId);
+        
+            return Results.Ok();
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            Results.Problem();
+            return Results.Problem(exception.Message);;
         }
     }
     
-    public void Delete(int id)
+    public IResult Delete(int id)
     {
-        _service.Delete(id);
+        try 
+        {
+            _service.Delete(id);
+        
+            return Results.Ok();
+        }
+        catch (Exception exception)
+        {
+            return Results.Problem(exception.Message);;
+        }
     }
 }

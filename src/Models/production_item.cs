@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 public class ProductionItem
 {
     [Key]
+    [JsonIgnore]
     public int ProductionItemId { get; set; }
 
     [Required]
@@ -11,6 +13,7 @@ public class ProductionItem
     public int ProductionOrderId { get; set; }
 
     [Required]
+    [JsonIgnore]
     public ProductionOrder? ProductionOrder { get; set; }
     
     [Required]
@@ -18,6 +21,7 @@ public class ProductionItem
     public int ProductId { get; set; }
     
     [Required]
+    [JsonIgnore]
     public Product? Product { get; set; }
     
     [Required]

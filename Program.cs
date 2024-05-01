@@ -14,7 +14,10 @@ builder.Services.AddDbContext<MyDbContext>(options => options.UseSqlServer(Envir
 var app = builder.Build();
 if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "We-Tech API V1");
+    });
 
     using (var scope = app.Services.CreateScope())
     {

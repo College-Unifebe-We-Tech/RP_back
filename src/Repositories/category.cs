@@ -3,11 +3,12 @@ using System.Data.SqlClient;
 
 public interface IRepositoryCategory<Category> 
 {
+    List<Category>? List();
     Category? Get(int id);
     Category? Create(string name);
     Category? GetByName(string name);
-    void Update(int id, string name);
-    void Delete(int id);
+    int? Update(int id, string name);
+    int? Delete(int id);
 }
 
 public class CategoryRepository : IRepositoryCategory<Category> 
@@ -18,6 +19,11 @@ public class CategoryRepository : IRepositoryCategory<Category>
     {
         _sql = new SQLServerAdapter<Category>(EnvironmentVariables.DBString);
     }
+
+    public List<Category>? List()
+    {
+        return _sql.List<Category>("SELECT CategoryId, CategoryName FROM Category");
+    } 
 
     public Category? Get(int id)
     {
@@ -40,18 +46,18 @@ public class CategoryRepository : IRepositoryCategory<Category>
         ]);
     }
 
-    public void Update(int id, string name) 
+    public int? Update(int id, string name) 
     {
-        _sql.Execute("UPDATE Category SET CategoryName = @name WHERE CategoryId = @id", [
+        return _sql.Get<Category>("UPDATE Category SET CategoryName = @name OUTPUT inserted.CategoryId WHERE CategoryId = @id" , [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
             new SqlParameter("@name", SqlDbType.VarChar) { Value = name }
-        ]);
+        ])?.CategoryId;
     }
 
-    public void Delete(int id) 
+    public int? Delete(int id) 
     {
-        _sql.Execute("DELETE FROM Category WHERE CategoryId = @id", [
+        return _sql.Get<Category>("DELETE FROM Category OUTPUT Deleted.CategoryId WHERE CategoryId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
-        ]);
+        ])?.CategoryId;
     }
 }

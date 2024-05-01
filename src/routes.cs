@@ -15,10 +15,11 @@ public static class Routing {
     app.MapGet("/health", (HttpContext context) => healthController.Check(context));
 
     // Category Routes
-    app.MapGet("/category/{id}", (int id) => categoryController.Get(id));
-    app.MapPost("/category", ([FromBody] Category category) => categoryController.Create(category));
-    app.MapPut("/category/{id}", ([FromBody] Category category, int id) => categoryController.Update(id, category));
-    app.MapDelete("/category/{id}", (int id) => categoryController.Delete( id));
+    app.MapGet("/category", async () => await categoryController.List());
+    app.MapGet("/category/{id}", async (int id) => await categoryController.Get(id));
+    app.MapPost("/category", async ([FromBody] Category category) => await categoryController.Create(category));
+    app.MapPut("/category/{id}", async ([FromBody] Category category, int id) => await categoryController.Update(id, category));
+    app.MapDelete("/category/{id}", async (int id) => await categoryController.Delete(id));
 
     // Employee Routes
     app.MapGet("/employee/{id}", (int id) => employeeController.Get(id));

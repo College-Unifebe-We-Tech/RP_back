@@ -14,15 +14,15 @@ public class ProductionOrder
     
     [Required]
     [DataType(DataType.Date)]
-    [Range(typeof(DateOnly), "2000-01-01", "9999-12-31",
+    [Range(typeof(DateTime), "2000-01-01", "9999-12-31",
             ErrorMessage = "A {0} deve estar no intervalo entre {1} e {2}.")]
-    public DateOnly ProductionOrderExpectedStartDate { get; set; }
+    public DateTime ProductionOrderExpectedStartDate { get; set; }
     
     [Required]
     [DataType(DataType.Date)]
-    [Range(typeof(DateOnly), "2000-01-01", "9999-12-31",
+    [Range(typeof(DateTime), "2000-01-01", "9999-12-31",
             ErrorMessage = "A {0} deve estar no intervalo entre {1} e {2}.")]
-    public DateOnly ProductionOrderExpectedCompletionDate { get; set; }
+    public DateTime ProductionOrderExpectedCompletionDate { get; set; }
     
     [Required]
     public int EmployeeId { get; set; }

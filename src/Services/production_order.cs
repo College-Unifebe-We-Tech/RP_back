@@ -13,13 +13,13 @@ public class ProductionOrderService
         return _repository.Get(id);
     }
 
-    public int? Create(string description, DateOnly expectedStartDate, DateOnly expectedCompletionDate, int employeeId) 
+    public int? Create(string description, DateTime expectedStartDate, DateTime expectedCompletionDate, int employeeId) 
     {
         var productionOrder = _repository.Create(description, expectedStartDate, expectedCompletionDate, employeeId);
         return productionOrder.ProductionOrderId;
     }
 
-    public void Update(int id, string description, DateOnly expectedStartDate, DateOnly expectedCompletionDate, int employeeId) 
+    public void Update(int id, string description, DateTime expectedStartDate, DateTime expectedCompletionDate, int employeeId) 
     {
         _repository.Update(id, description, expectedStartDate, expectedCompletionDate, employeeId);        
     }

@@ -31,17 +31,18 @@ public class ProductionItemRepository : IRepositoryProductionItem<ProductionItem
             new SqlParameter("@productionOrderId", SqlDbType.Int) { Value = productionOrderId },
             new SqlParameter("@productId", SqlDbType.Int) { Value = productId },
             new SqlParameter("@quantity", SqlDbType.Int) { Value = quantity },
-            new SqlParameter("@name", SqlDbType.Bit) { Value = waste },
+            new SqlParameter("@waste", SqlDbType.Bit) { Value = waste },
         ]);
     }
 
-    public void Update(int id, int productionOrder, int productId, int quantity, bool waste) 
+    public void Update(int id, int productionOrderId, int productId, int quantity, bool waste) 
     {
-        _sql.Execute("UPDATE ProductionItem SET ProductId, Quantity, Waste = @name WHERE ProductionItemId = @id", [
-            new SqlParameter("@productionOrder", SqlDbType.Int) { Value = productionOrder },
+        _sql.Execute("UPDATE ProductionItem SET ProductionOrderId = @productionOrderId, ProductId = @productId, Quantity = @quantity, Waste = @waste WHERE ProductionItemId = @id", [
+            new SqlParameter("@id", SqlDbType.Int) { Value = id },
+            new SqlParameter("@productionOrderId", SqlDbType.Int) { Value = productionOrderId },
             new SqlParameter("@productId", SqlDbType.Int) { Value = productId },
             new SqlParameter("@quantity", SqlDbType.Int) { Value = quantity },
-            new SqlParameter("@name", SqlDbType.Bit) { Value = waste },
+            new SqlParameter("@waste", SqlDbType.Bit) { Value = waste },
         ]);
     }
 

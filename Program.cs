@@ -27,6 +27,7 @@ if (app.Environment.IsDevelopment()) {
     }   
 }
 
+app.UseMiddleware<ExceptionHandleMiddleware>();
 Routing.MapEndpoints(app);
 
-app.Run();
+app.Run(); 

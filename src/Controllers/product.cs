@@ -9,35 +9,35 @@ public class ProductController
 
     public async Task<IResult> List()
     {
-        List<Product> products = _service.List();
+        List<Product> products = await _service.List();
 
         return Results.Json(products, statusCode: StatusCodes.Status200OK);
     }
 
     public async Task<IResult> Get(int id) 
     {
-        Product? productId = _service.Get(id) ?? throw new Exception("does not exist");
+        Product? productId = await _service.Get(id) ?? throw new Exception("does not exist");
 
         return Results.Json(productId, statusCode: StatusCodes.Status200OK);
     }
 
     public async Task<IResult> Create(Product product) 
     {
-        int? productId = _service.Create(product.ProductName, product.SupplierId, product.CategoryId, product.ProductCostPrice, product.ProductSalePrice) ?? throw new Exception("did not create");
+        int? productId = await _service.Create(product.ProductName, product.SupplierId, product.CategoryId, product.ProductCostPrice, product.ProductSalePrice) ?? throw new Exception("did not create");
 
         return Results.Json(productId, statusCode: StatusCodes.Status200OK);
     }
 
     public async Task<IResult> Update(int id, Product product) 
     {
-        _service.Update(id, product.ProductName, product.SupplierId, product.CategoryId, product.ProductCostPrice, product.ProductSalePrice);
+        await _service.Update(id, product.ProductName, product.SupplierId, product.CategoryId, product.ProductCostPrice, product.ProductSalePrice);
     
         return Results.Ok();
     }
 
     public async Task<IResult> Delete(int id) 
     {
-        _service.Delete(id);
+        await _service.Delete(id);
 
         return Results.Ok();
     }

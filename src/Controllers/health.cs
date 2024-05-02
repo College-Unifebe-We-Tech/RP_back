@@ -6,7 +6,7 @@ public class HealthController {
     }
 
     public async void Check(HttpContext context) {
-        string result = _service.Check();
+        string result = await _service.Check();
 
         await context.Response.WriteAsync(result); // set the value to return to front end.
     }

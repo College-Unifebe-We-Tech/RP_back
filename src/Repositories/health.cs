@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 public interface IRepositoryHealth<Health> 
 {
-    Health? Create(DateTime date);
+    Task<Health?> Create(DateTime date);
 }
 
 public class HealthRepository : IRepositoryHealth<Health> 
@@ -15,7 +15,7 @@ public class HealthRepository : IRepositoryHealth<Health>
         _sql = new SQLServerAdapter<Health>(EnvironmentVariables.DBString);
     }
 
-    public Health? Create(DateTime date) 
+    public Task<Health?> Create(DateTime date) 
     {
         return _sql.Get<Health>("INSERT INTO health (sync) OUTPUT inserted.sync VALUES(@date)", [
             new SqlParameter("@date", SqlDbType.DateTime) { Value = date }

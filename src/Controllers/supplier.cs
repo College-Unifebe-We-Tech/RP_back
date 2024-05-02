@@ -9,36 +9,36 @@ public class SupplierController
 
     public async Task<IResult> List()
     {
-        List<Supplier> suppliers = _service.List();
+        List<Supplier> suppliers = await _service.List();
 
         return Results.Json(suppliers, statusCode: StatusCodes.Status200OK);
     }
 
     public async Task<IResult> Get(int id) 
     {
-        Supplier? supplierId = _service.Get(id) ?? throw new Exception("does not exist");
+        Supplier? supplierId = await _service.Get(id) ?? throw new Exception("does not exist");
 
         return Results.Json(supplierId, statusCode: StatusCodes.Status200OK);
     }
 
     public async Task<IResult> Create(Supplier supplier) 
     {
-        int? supplierId = _service.Create(supplier.SupplierName, supplier.SupplierCNPJ, supplier.SupplierAddress, supplier.SupplierEmail) ?? throw new Exception("did not create");
+        int? supplierId = await _service.Create(supplier.SupplierName, supplier.SupplierCNPJ, supplier.SupplierAddress, supplier.SupplierEmail) ?? throw new Exception("did not create");
             
         return Results.Json(supplierId, statusCode: StatusCodes.Status200OK);
     }
 
     public async Task<IResult> Update(int id, Supplier supplier) 
     {
-        _service.Update(id, supplier.SupplierName, supplier.SupplierCNPJ, supplier.SupplierAddress, supplier.SupplierEmail);
+        await _service.Update(id, supplier.SupplierName, supplier.SupplierCNPJ, supplier.SupplierAddress, supplier.SupplierEmail);
 
-        return Results.Ok();
+        return Results.NoContent();
     }
     
     public async Task<IResult> Delete(int id) 
     {
-        _service.Delete(id);
+        await _service.Delete(id);
 
-        return Results.Ok();
+        return Results.NoContent();
     }
 }

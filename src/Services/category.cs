@@ -8,38 +8,36 @@ public class CategoryService
         _repository = new CategoryRepository();
     }
 
-    public List<Category> List()
+    public Task<List<Category>> List()
     {
-        return _repository.List() ?? [];
+        return _repository.List();
     }
 
-    public Category Get(int id)
+    public async Task<Category> Get(int id)
     {
-        var category = _repository.Get(id) ?? throw new ArgumentException($"Category with id {id} does not exist");
-        
-        return category;
+        return await _repository.Get(id) ?? throw new ArgumentException($"Category with id {id} does not exist");
     }
 
-    public int? Create(string name) 
+    public async Task<int?> Create(string name) 
     {
-        var existingCategory = _repository.GetByName(name);
+        Category? existingCategory = await _repository.GetByName(name);
         if (existingCategory?.CategoryName == name)
         {
             throw new ArgumentException("Categoria já existe");
         }
 
-         Category createdCategory = _repository.Create(name);
+         Category? createdCategory = await _repository.Create(name);
         
-         return createdCategory.CategoryId;
+         return createdCategory?.CategoryId;
     }
 
-    public void Update(int id, string name) 
+    public async Task Update(int id, string name) 
     {
-        var _ = _repository.Update(id, name) ?? throw new ArgumentException($"Category with id {id} does not exist");       
+        var _ = await _repository.Update(id, name) ?? throw new ArgumentException($"Category with id {id} does not exist");       
     }
 
-    public void Delete (int id)
+    public async Task Delete (int id)
     {
-        var _ = _repository.Delete(id) ?? throw new ArgumentException($"Category with id {id} does not exist");       
+        var _ = await _repository.Delete(id) ?? throw new ArgumentException($"Category with id {id} does not exist");       
     }
 }

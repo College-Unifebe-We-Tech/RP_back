@@ -8,29 +8,30 @@ public class ProductionOrderService
         _repository = new ProductionOrderRepository();
     }
 
-    public List<ProductionOrder> List()
+    public Task<List<ProductionOrder>> List()
     {
-        return _repository.List() ?? [];
+        return _repository.List();
     }
 
-    public ProductionOrder? Get(int id)
+    public Task<ProductionOrder?> Get(int id)
     {
         return _repository.Get(id);
     }
 
-    public int? Create(string description, DateTime expectedStartDate, DateTime expectedCompletionDate, int employeeId) 
+    public async Task<int?> Create(string description, DateTime expectedStartDate, DateTime expectedCompletionDate, int employeeId) 
     {
-        var productionOrder = _repository.Create(description, expectedStartDate, expectedCompletionDate, employeeId);
+        var productionOrder = await _repository.Create(description, expectedStartDate, expectedCompletionDate, employeeId);
+        
         return productionOrder.ProductionOrderId;
     }
 
-    public void Update(int id, string description, DateTime expectedStartDate, DateTime expectedCompletionDate, int employeeId) 
+    public async Task Update(int id, string description, DateTime expectedStartDate, DateTime expectedCompletionDate, int employeeId) 
     {
-        _repository.Update(id, description, expectedStartDate, expectedCompletionDate, employeeId);        
+        var _ = await _repository.Update(id, description, expectedStartDate, expectedCompletionDate, employeeId) ?? throw new ArgumentException($"Production Order with id {id} does not exist");        
     }
 
-    public void Delete (int id)
+    public async Task Delete (int id)
     {
-        _repository.Delete(id);
+        var _ = await _repository.Delete(id) ?? throw new ArgumentException($"Production Order with id {id} does not exist");
     }
 }

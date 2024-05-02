@@ -8,36 +8,36 @@ public class SupplierService
         _repository = new SupplierRepository();
     }
 
-    public List<Supplier> List()
+    public Task<List<Supplier>> List()
     {
-        return _repository.List() ?? [];
+        return _repository.List();
     }
 
-    public Supplier? Get(int id)
+    public Task<Supplier?> Get(int id)
     {
         return _repository.Get(id);
     }
 
-    public int? Create(string name, string cnpj, string address, string email) 
+    public async Task<int?> Create(string name, string cnpj, string address, string email) 
     {
-        var existingSupplier = _repository.GetByName(name);
+        var existingSupplier = await _repository.GetByName(name);
         if (existingSupplier?.SupplierName == name)
         {
             throw new Exception("Produto já existe");
         }
 
-        var createdSupplier = _repository.Create(name, cnpj, address, email);
+        var createdSupplier = await _repository.Create(name, cnpj, address, email);
 
         return createdSupplier?.SupplierId;
     }
 
-    public void Update(int id, string name, string cnpj, string address, string email) 
+    public async Task Update(int id, string name, string cnpj, string address, string email) 
     {
-        _repository.Update(id, name, cnpj, address, email);        
+        var _ = await _repository.Update(id, name, cnpj, address, email) ?? throw new ArgumentException($"Supplier with id {id} does not exist");        
     }
 
-    public void Delete (int id)
+    public async Task Delete (int id)
     {
-        _repository.Delete(id);
+        var _ = await _repository.Delete(id) ?? throw new ArgumentException($"Supplier with id {id} does not exist");
     }
 }

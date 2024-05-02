@@ -16,6 +16,7 @@ public class CategoryService
     public Category Get(int id)
     {
         var category = _repository.Get(id) ?? throw new ArgumentException($"Category with id {id} does not exist");
+        
         return category;
     }
 

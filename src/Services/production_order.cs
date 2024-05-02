@@ -8,6 +8,11 @@ public class ProductionOrderService
         _repository = new ProductionOrderRepository();
     }
 
+    public List<ProductionOrder> List()
+    {
+        return _repository.List() ?? [];
+    }
+
     public ProductionOrder? Get(int id)
     {
         return _repository.Get(id);

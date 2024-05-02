@@ -2,19 +2,21 @@ public class EmployeeController
 {
     private readonly EmployeeService _service;
 
-    public EmployeeController() 
+    public async Task<IResult> List()
     {
-        _service = new EmployeeService(); 
+        List<Employee> employees = _service.List();
+
+        return Results.Json(employees, statusCode: StatusCodes.Status200OK);
     }
 
-    public IResult Get(int id) 
+    public async Task<IResult> Get(int id) 
     {
         Employee? employee = _service.Get(id) ?? throw new Exception("does not exist");
 
         return Results.Json(employee, statusCode: StatusCodes.Status200OK);
     }
 
-    public IResult Create(Employee employee) 
+    public async Task<IResult> Create(Employee employee) 
     {
         int? employeeId = _service.Create(employee.EmployeeName, employee.EmployeeAddress, employee.EmployeeEmail) ?? throw new Exception("did not create");
 
@@ -22,14 +24,14 @@ public class EmployeeController
     }
 
 
-    public IResult Update(int id, Employee employee) 
+    public async Task<IResult> Update(int id, Employee employee) 
     {
         _service.Update(id, employee.EmployeeName, employee.EmployeeAddress, employee.EmployeeEmail);
 
         return Results.Ok();
     }
 
-    public IResult Delete(int id) 
+    public async Task<IResult> Delete(int id) 
     {
         _service.Delete(id);
 

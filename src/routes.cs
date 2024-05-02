@@ -22,33 +22,38 @@ public static class Routing {
     app.MapDelete("/category/{id}", async (int id) => await categoryController.Delete(id));
 
     // Employee Routes
-    app.MapGet("/employee/{id}", (int id) => employeeController.Get(id));
-    app.MapPost("/employee", ([FromBody] Employee employee) => employeeController.Create(employee));
-    app.MapPut("/employee/{id}", ([FromBody] Employee employee, int id) => employeeController.Update(id, employee));
-    app.MapDelete("/employee/{id}", (int id) => employeeController.Delete(id));
+    app.MapGet("/employee", async () => await employeeController.List());
+    app.MapGet("/employee/{id}", async (int id) => await employeeController.Get(id));
+    app.MapPost("/employee", async ([FromBody] Employee employee) => await employeeController.Create(employee));
+    app.MapPut("/employee/{id}", async ([FromBody] Employee employee, int id) => await employeeController.Update(id, employee));
+    app.MapDelete("/employee/{id}", async (int id) => await employeeController.Delete(id));
 
     // Product Routes
-    app.MapGet("/product/{id}", (int id) => productController.Get(id));
-    app.MapPost("/product", ([FromBody] Product product) => productController.Create(product));
-    app.MapPut("/product/{id}", ([FromBody] Product product, int id) => productController.Update(id, product));
-    app.MapDelete("/product/{id}", (int id) => productController.Delete(id));
+    app.MapGet("/product", async () => await productController.List());
+    app.MapGet("/product/{id}", async (int id) => await productController.Get(id));
+    app.MapPost("/product", async ([FromBody] Product product) => await productController.Create(product));
+    app.MapPut("/product/{id}", async ([FromBody] Product product, int id) => await productController.Update(id, product));
+    app.MapDelete("/product/{id}", async (int id) => await productController.Delete(id));
 
     // Production Item Routes
-    app.MapGet("/production/item/{id}", (int id) => productionItemController.Get(id));
-    app.MapPost("/production/item", ([FromBody] ProductionItem productionItem) => productionItemController.Create(productionItem));
-    app.MapPut("/production/item/{id}", ([FromBody] ProductionItem productionItem, int id) => productionItemController.Update(id, productionItem));
-    app.MapDelete("/production/item/{id}", (int id) => productionItemController.Delete(id));
+    app.MapGet("/production/item", async () => await productionItemController.List());
+    app.MapGet("/production/item/{id}", async (int id) => await productionItemController.Get(id));
+    app.MapPost("/production/item", async ([FromBody] ProductionItem productionItem) => await productionItemController.Create(productionItem));
+    app.MapPut("/production/item/{id}", async ([FromBody] ProductionItem productionItem, int id) => await productionItemController.Update(id, productionItem));
+    app.MapDelete("/production/item/{id}", async (int id) => await productionItemController.Delete(id));
 
     // Production Order Routes
-    app.MapGet("/production/order/{id}", (int id) => productionOrderController.Get(id));
-    app.MapPost("/production/order", ([FromBody] ProductionOrder productionOrder) => productionOrderController.Create(productionOrder));
-    app.MapPut("/production/order/{id}", ([FromBody] ProductionOrder productionOrder, int id) => productionOrderController.Update(id, productionOrder));
-    app.MapDelete("/production/order/{id}", (int id) => productionOrderController.Delete(id));
+    app.MapGet("/production/order", async () => await productionOrderController.List());
+    app.MapGet("/production/order/{id}", async (int id) => await productionOrderController.Get(id));
+    app.MapPost("/production/order", async ([FromBody] ProductionOrder productionOrder) => await productionOrderController.Create(productionOrder));
+    app.MapPut("/production/order/{id}", async ([FromBody]  ProductionOrder productionOrder, int id) => await productionOrderController.Update(id, productionOrder));
+    app.MapDelete("/production/order/{id}", async (int id) => await productionOrderController.Delete(id));
 
     // Supplier Routes
-    app.MapGet("/supplier/{id}", (int id) => supplierController.Get(id));
-    app.MapPost("/supplier", ([FromBody] Supplier supplier) => supplierController.Create(supplier));
-    app.MapPut("/supplier/{id}", ([FromBody] Supplier supplier, int id) => supplierController.Update(id, supplier));
-    app.MapDelete("/supplier/{id}", (int id) => supplierController.Delete(id));
+    app.MapGet("/supplier", async () => await supplierController.List());
+    app.MapGet("/supplier/{id}", async (int id) => await supplierController.Get(id));
+    app.MapPost("/supplier", async ([FromBody] Supplier supplier) => await supplierController.Create(supplier));
+    app.MapPut("/supplier/{id}", async ([FromBody] Supplier supplier, int id) => await supplierController.Update(id, supplier));
+    app.MapDelete("/supplier/{id}", async (int id) => await supplierController.Delete(id));
   }
 }

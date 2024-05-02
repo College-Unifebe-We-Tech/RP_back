@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 
 public interface IRepositoryProductionOrder<ProductionOrder> 
 {
+    List<ProductionOrder> List();
     ProductionOrder? Get(int id);
     ProductionOrder? Create(string description, DateTime expectedStartDate, DateTime expectedCompletionDate, int employeeId);
     void Update(int id, string description, DateTime expectedStartDate, DateTime expectedCompletionDate, int employeeId);
@@ -16,6 +17,11 @@ public class ProductionOrderRepository : IRepositoryProductionOrder<ProductionOr
     public ProductionOrderRepository() 
     {
         _sql = new SQLServerAdapter<ProductionOrder>(EnvironmentVariables.DBString);
+    }
+
+    public List<ProductionOrder>? List()
+    {
+        return _sql.List<ProductionOrder>("SELECT  ProductionOrderId, ProductionOrderDescription, ProductionOrderExpectedStartDate, ProductionOrderExpectedCompletionDate, EmployeeId FROM ProductionOrder");
     }
 
     public ProductionOrder? Get(int id)

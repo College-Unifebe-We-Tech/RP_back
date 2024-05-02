@@ -8,6 +8,11 @@ public class EmployeeService
         _repository = new EmployeeRepository();
     }
 
+    public List<Employee> List()
+    {
+        return _repository.List() ?? [];
+    }
+
     public Employee? Get(int id)
     {
         return _repository.Get(id);

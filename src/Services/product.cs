@@ -8,6 +8,11 @@ public class ProductService
         _repository = new ProductRepository();
     }
 
+    public List<Product> List()
+    {
+        return _repository.List() ?? [];
+    }
+
     public Product? Get(int id)
     {
         return _repository.Get(id);

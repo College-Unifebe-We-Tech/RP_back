@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 
 public interface IRepositoryProductionItem<ProductionItem> 
 {
+    List<ProductionItem>? List();
     ProductionItem? Get(int id);
     ProductionItem? Create(int productionOrder, int productId, int quantity, bool waste);
     void Update(int id, int productionOrder, int productId, int quantity, bool waste);
@@ -17,6 +18,11 @@ public class ProductionItemRepository : IRepositoryProductionItem<ProductionItem
     {
         _sql = new SQLServerAdapter<ProductionItem>(EnvironmentVariables.DBString);
     }
+
+    public List<ProductionItem>? List()
+    {
+        return _sql.List<ProductionItem>("SELECT ProductionItemId, ProductionOrderId, ProductId, Quantity, Waste FROM ProductionItem");
+    } 
 
     public ProductionItem? Get(int id)
     {

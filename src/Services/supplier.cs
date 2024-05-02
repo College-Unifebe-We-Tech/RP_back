@@ -8,6 +8,11 @@ public class SupplierService
         _repository = new SupplierRepository();
     }
 
+    public List<Supplier> List()
+    {
+        return _repository.List() ?? [];
+    }
+
     public Supplier? Get(int id)
     {
         return _repository.Get(id);

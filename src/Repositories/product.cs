@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 
 public interface IRepositoryProduct<Product> 
 {
+    List<Product>? List();
     Product? Get(int id);
     Product? Create(string name, int supplier, int category, decimal costPrice, decimal salePrice);
     Product? GetByName(string name);
@@ -18,6 +19,11 @@ public class ProductRepository : IRepositoryProduct<Product>
     {
         _sql = new SQLServerAdapter<Product>(EnvironmentVariables.DBString);
     }
+
+    public List<Product>? List()
+    {
+        return _sql.List<Product>("SELECT ProductId, ProductName, SupplierId, CategoryId, ProductCostPrice, ProductSalePrice FROM Product");
+    } 
 
     public Product? Get(int id)
     {

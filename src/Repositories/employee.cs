@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 
 public interface IRepositoryEmployee<Employee> 
 {
+    List<Employee>? List();
     Employee? Get(int id);
     Employee? Create(string name, string address, string email);
     Employee? GetByName(string name);
@@ -18,6 +19,11 @@ public class EmployeeRepository : IRepositoryEmployee<Employee>
     {
         _sql = new SQLServerAdapter<Employee>(EnvironmentVariables.DBString);
     }
+
+    public List<Employee>? List()
+    {
+        return _sql.List<Employee>("SELECT EmployeeId, EmployeeName, EmployeeAddress, EmployeeEmail FROM Employee");
+    } 
 
     public Employee? Get(int id)
     {

@@ -5,8 +5,8 @@ public class HealthService {
         _repository = new HealthRepository(); // in this case it will be this one using sql server.
     }
 
-    public string Check() {
-        Health? createdHealth =_repository.Create(DateTime.Now);
+    public async Task<string> Check() {
+        Health? createdHealth = await _repository.Create(DateTime.Now);
                 
         return createdHealth.sync.ToLongDateString();
     }

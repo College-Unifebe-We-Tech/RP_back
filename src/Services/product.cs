@@ -8,36 +8,36 @@ public class ProductService
         _repository = new ProductRepository();
     }
 
-    public List<Product> List()
+    public Task<List<Product>> List()
     {
-        return _repository.List() ?? [];
+        return _repository.List();
     }
 
-    public Product? Get(int id)
+    public Task<Product?> Get(int id)
     {
         return _repository.Get(id);
     }
 
-    public int? Create(string name, int supplier, int category, decimal costPrice, decimal salePrice) 
+    public async Task<int?> Create(string name, int supplier, int category, decimal costPrice, decimal salePrice) 
     {
-        var existingProduct = _repository.GetByName(name);
+        var existingProduct = await _repository.GetByName(name);
         if (existingProduct?.ProductName == name)
         {
             throw new Exception("Produto já existe");
         }
 
-        var createdProduct = _repository.Create(name, supplier, category, costPrice, salePrice);
+        var createdProduct = await _repository.Create(name, supplier, category, costPrice, salePrice);
 
         return createdProduct?.ProductId;
     }
 
-    public void Update(int id, string name, int supplier, int category, decimal costPrice, decimal salePrice) 
+    public async Task Update(int id, string name, int supplier, int category, decimal costPrice, decimal salePrice) 
     {
-        _repository.Update(id, name, supplier, category, costPrice, salePrice);        
+        var _ = await _repository.Update(id, name, supplier, category, costPrice, salePrice) ?? throw new ArgumentException($"Product with id {id} does not exist");        
     }
 
-    public void Delete (int id)
+    public async Task Delete (int id)
     {
-        _repository.Delete(id);
+        var _ = await _repository.Delete(id) ?? throw new ArgumentException($"Product with id {id} does not exist");
     }
 }

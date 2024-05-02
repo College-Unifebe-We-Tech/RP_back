@@ -8,56 +8,79 @@ public class SQLServerAdapter<T> {
     public SQLServerAdapter(string connectionString) {
         _connectionString = connectionString;
     }
+    public async Task Execute(string query, SqlParameter[] parameters = null)
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                if (parameters != null)
+                {
+                    command.Parameters.AddRange(parameters);
+                }
 
-    public void Execute(string query, SqlParameter[] parameters = null) {
-        using SqlConnection connection = new(_connectionString);
-        using SqlCommand command = new(query, connection);
-        if (parameters != null) {
-            command.Parameters.AddRange(parameters);
+                await connection.OpenAsync();
+                await command.ExecuteNonQueryAsync();
+            }
         }
-
-        connection.Open();
-        command.ExecuteNonQuery();
     }
 
-    public T? Get<T>(string query, SqlParameter[] parameters = null) where T : new() {
-        using (SqlConnection connection = new(_connectionString)) {
-            using SqlCommand command = new(query, connection);
-            if (parameters != null) {
-                command.Parameters.AddRange(parameters);
-            }
+    public async Task<T?> Get<T>(string query, SqlParameter[] parameters = null) where T : new()
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                if (parameters != null)
+                {
+                    command.Parameters.AddRange(parameters);
+                }
 
-            connection.Open();
+                await connection.OpenAsync();
 
-            using SqlDataReader reader = command.ExecuteReader();
-            while (reader.Read()){
-                return MapToObject<T>(reader);
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        return MapToObject<T>(reader);
+                    }
+                }
             }
         }
 
         return default;
     }
 
-    public List<T> List<T>(string query, SqlParameter[] parameters = null) where T : new() {
-        List<T> result = [];
 
-        using (SqlConnection connection = new(_connectionString)) {
-            using SqlCommand command = new(query, connection);
-            if (parameters != null) {
-                command.Parameters.AddRange(parameters);
-            }
-            
-            connection.Open();
+    public async Task<List<T>> List<T>(string query, SqlParameter[] parameters = null) where T : new()
+    {
+        List<T> result = new List<T>();
 
-            using SqlDataReader reader = command.ExecuteReader();
-            while (reader.Read()){
-                T obj = MapToObject<T>(reader);
-                result.Add(obj);
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                if (parameters != null)
+                {
+                    command.Parameters.AddRange(parameters);
+                }
+
+                await connection.OpenAsync();
+
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        T obj = MapToObject<T>(reader);
+                        result.Add(obj);
+                    }
+                }
             }
         }
 
         return result;
     }
+
 
     private T MapToObject<T>(IDataRecord record) where T : new() {
         T obj = new();

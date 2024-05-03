@@ -33,14 +33,14 @@ public class EmployeeController
     {
         await _service.Update(id, employee.EmployeeName, employee.EmployeeAddress, employee.EmployeeEmail);
 
-        return Results.Ok();
+        return Results.NoContent();
     }
 
     public async Task<IResult> Delete(int id) 
     {
         await _service.Delete(id);
 
-        return Results.Ok();
+        return Results.NoContent();
     }
 }
 

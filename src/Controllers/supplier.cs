@@ -25,7 +25,7 @@ public class SupplierController
     {
         int? supplierId = await _service.Create(supplier.SupplierName, supplier.SupplierCNPJ, supplier.SupplierAddress, supplier.SupplierEmail) ?? throw new Exception("did not create");
             
-        return Results.Json(supplierId, statusCode: StatusCodes.Status200OK);
+        return Results.Json(supplierId, statusCode: StatusCodes.Status201Created);
     }
 
     public async Task<IResult> Update(int id, Supplier supplier) 

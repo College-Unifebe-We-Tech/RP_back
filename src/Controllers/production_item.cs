@@ -25,7 +25,7 @@ public class ProductionItemController
     {
         int? productionItemId = await _service.Create(productionItem.ProductionOrderId, productionItem.ProductId, productionItem.Quantity, productionItem.Waste) ?? throw new Exception("did not create");
             
-        return Results.Json(productionItemId, statusCode: StatusCodes.Status200OK);
+        return Results.Json(productionItemId, statusCode: StatusCodes.Status201Created);
     }
 
     public async Task<IResult> Update(int id, ProductionItem productionItem) 

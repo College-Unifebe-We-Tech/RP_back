@@ -25,20 +25,20 @@ public class ProductController
     {
         int? productId = await _service.Create(product.ProductName, product.SupplierId, product.CategoryId, product.ProductCostPrice, product.ProductSalePrice) ?? throw new Exception("did not create");
 
-        return Results.Json(productId, statusCode: StatusCodes.Status200OK);
+        return Results.Json(productId, statusCode: StatusCodes.Status201Created);
     }
 
     public async Task<IResult> Update(int id, Product product) 
     {
         await _service.Update(id, product.ProductName, product.SupplierId, product.CategoryId, product.ProductCostPrice, product.ProductSalePrice);
     
-        return Results.Ok();
+        return Results.NoContent();
     }
 
     public async Task<IResult> Delete(int id) 
     {
         await _service.Delete(id);
 
-        return Results.Ok();
+        return Results.NoContent();
     }
 }

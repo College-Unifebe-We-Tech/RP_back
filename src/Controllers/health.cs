@@ -1,13 +1,13 @@
 public class HealthController {
-    private readonly HealthService _service; // the controller will only get information from the request and give a answer, all the businnes logic must be in a service.
+    private readonly HealthService _service;
 
     public HealthController() {
         _service = new HealthService();
     }
 
-    public async void Check(HttpContext context) {
-        string result = await _service.Check();
-
-        await context.Response.WriteAsync(result); // set the value to return to front end.
+    // Change the return type to Task<IResult>
+    public async Task<IResult> Check() {
+        Health health = await _service.Check();
+        return Results.Json(health, statusCode: StatusCodes.Status200OK);
     }
 }

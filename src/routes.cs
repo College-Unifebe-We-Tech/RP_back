@@ -12,7 +12,7 @@ public static class Routing {
 
     app.MapGet("/", () => "Hello World!");
 
-    app.MapGet("/health", (HttpContext context) => healthController.Check(context));
+    app.MapGet("/health", async () => await healthController.Check());
 
     // Category Routes
     app.MapGet("/category", async () => await categoryController.List());

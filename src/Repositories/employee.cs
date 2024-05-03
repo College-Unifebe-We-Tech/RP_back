@@ -43,14 +43,14 @@ public class EmployeeRepository : IRepositoryEmployee<Employee>
 
     public Task<Employee?> GetByName(string name) 
     {
-        return _sql.Get<Employee>("SELECT EmployeeId EmployeeName FROM Employee WHERE EmployeeName = @name", [
+        return _sql.Get<Employee?>("SELECT EmployeeId EmployeeName FROM Employee WHERE EmployeeName = @name", [
             new SqlParameter("@name", SqlDbType.VarChar) { Value = name },
         ]);
     }
     
     public async Task<int?> Update(int id, string name, string address, string email) 
     {
-        var employee = await _sql.Get<Employee>("UPDATE Employee SET EmployeeName = @name, EmployeeAddress = @address, EmployeeEmail OUTPUT inserted.EmployeeId = @email WHERE EmployeeId = @id", [
+        var employee = await _sql.Get<Employee>("UPDATE Employee SET EmployeeName = @name, EmployeeAddress = @address, EmployeeEmail = @email OUTPUT inserted.EmployeeId WHERE EmployeeId = @id", [
             new SqlParameter("@id", SqlDbType.Int) { Value = id },
             new SqlParameter("@name", SqlDbType.VarChar) { Value = name },
             new SqlParameter("@address", SqlDbType.VarChar) { Value = address },

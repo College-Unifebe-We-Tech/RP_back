@@ -34,7 +34,7 @@ public class SupplierRepository : IRepositorySupplier<Supplier>
 
     public Task<Supplier?> Create(string name, string cnpj, string address, string email) 
     {
-        return _sql.Get<Supplier>("INSERT INTO Supplier (SupplierName, SupplierCNPJ, SupplierAddress, SupplierEmail) OUTPUT inserted.* VALUES (@name, @cnpj, @address, @email)", [
+        return _sql.Get<Supplier>("INSERT INTO Supplier (SupplierName, SupplierCNPJ, SupplierAddress, SupplierEmail) OUTPUT inserted.SupplierId VALUES (@name, @cnpj, @address, @email)", [
             new SqlParameter("@name", SqlDbType.VarChar) { Value = name },
             new SqlParameter("@cnpj", SqlDbType.VarChar) { Value = cnpj},
             new SqlParameter("@address", SqlDbType.VarChar) { Value = address},

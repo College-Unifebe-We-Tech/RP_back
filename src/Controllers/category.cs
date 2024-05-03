@@ -1,6 +1,3 @@
-using System.Linq.Expressions;
-using Microsoft.AspNetCore.Mvc;
-
 public class CategoryController 
 {
     private readonly CategoryService _service;

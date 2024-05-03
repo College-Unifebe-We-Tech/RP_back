@@ -2,6 +2,11 @@ public class EmployeeController
 {
     private readonly EmployeeService _service;
 
+    public EmployeeController() 
+    {
+        _service = new EmployeeService(); 
+    }
+
     public async Task<IResult> List()
     {
         List<Employee> employees = await _service.List();
@@ -17,10 +22,10 @@ public class EmployeeController
     }
 
     public async Task<IResult> Create(Employee employee) 
-    {
-        int? employeeId = await _service.Create(employee.EmployeeName, employee.EmployeeAddress, employee.EmployeeEmail) ?? throw new Exception("did not create");
+    {    
+        int? createdEmployeeId = await _service.Create(employee.EmployeeName, employee.EmployeeAddress, employee.EmployeeEmail) ?? throw new Exception("Can't create a null Employee"); 
 
-        return Results.Json(employeeId, statusCode: StatusCodes.Status200OK);
+        return Results.Json(createdEmployeeId, statusCode: StatusCodes.Status201Created); 
     }
 
 

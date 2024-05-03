@@ -34,7 +34,7 @@ public class ProductRepository : IRepositoryProduct<Product>
 
     public Task<Product?> Create(string name, int supplier, int category, decimal costPrice, decimal salePrice) 
     {
-        return _sql.Get<Product>("INSERT INTO Product (ProductName, SupplierId, CategoryId, ProductCostPrice, ProductSalePrice) OUTPUT inserted.* VALUES (@name, @supplierId, @categoryId, @costPrice, @salePrice)", [
+        return _sql.Get<Product>("INSERT INTO Product (ProductName, SupplierId, CategoryId, ProductCostPrice, ProductSalePrice) OUTPUT inserted.ProductId VALUES (@name, @supplierId, @categoryId, @costPrice, @salePrice)", [
             new SqlParameter("@name", SqlDbType.VarChar) { Value = name },
             new SqlParameter("@supplierId", SqlDbType.Int) { Value = supplier },
             new SqlParameter("@categoryId", SqlDbType.Int) { Value = category },

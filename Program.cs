@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors();
 
 // Migrations Database Connection
 builder.Services.AddDbContext<MyDbContext>(options => options.UseSqlServer(EnvironmentVariables.DBString));
@@ -25,6 +26,12 @@ if (app.Environment.IsDevelopment()) {
         var context = services.GetRequiredService<MyDbContext>();
         context.Database.Migrate();
     }   
+
+    app.UseCors(context => {
+        context.AllowAnyHeader();
+        context.AllowAnyMethod();
+        context.AllowAnyOrigin();
+    });
 }
 
 app.UseMiddleware<ExceptionHandleMiddleware>();

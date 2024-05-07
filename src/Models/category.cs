@@ -4,7 +4,6 @@ using System.Text.Json.Serialization;
 public class Category
 {
     [Key]
-    [JsonIgnore]
     public int CategoryId { get; set; }
 
     [Required]

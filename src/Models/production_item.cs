@@ -5,7 +5,6 @@ using System.Text.Json.Serialization;
 public class ProductionItem
 {
     [Key]
-    [JsonIgnore]
     public int ProductionItemId { get; set; }
 
     [Required]

@@ -4,7 +4,6 @@ using System.Text.Json.Serialization;
 public class Supplier
 {
     [Key]
-    [JsonIgnore]
     public int SupplierId { get; set; }
 
     [Required]
